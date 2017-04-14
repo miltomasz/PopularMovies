@@ -1,21 +1,30 @@
 package com.plumya.popularmovies;
 
-import android.graphics.Movie;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.plumya.popularmovies.adapter.PopularMoviesAdapter;
+import com.plumya.popularmovies.model.Movie;
+import com.plumya.popularmovies.util.MovieJsonUtils;
+import com.plumya.popularmovies.util.NetworkUtils;
+
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private RecyclerView mMoviesRecyclerView;
-//    private ForecastAdapter mForecastAdapter;
+    private PopularMoviesAdapter mMoviesAdapter;
 
     private TextView mErrorMessageDisplay;
 
@@ -35,8 +44,10 @@ public class MainActivity extends AppCompatActivity {
         mMoviesRecyclerView.setLayoutManager(layoutManager);
         mMoviesRecyclerView.setHasFixedSize(true);
 
-//        mForecastAdapter = new ForecastAdapter(this);
-//        mMoviesRecyclerView.setAdapter(mForecastAdapter);
+        mMoviesAdapter = new PopularMoviesAdapter(this);
+        mMoviesRecyclerView.setAdapter(mMoviesAdapter);
+
+        loadMovies();
     }
 
     private void showWeatherDataView() {
@@ -48,9 +59,15 @@ public class MainActivity extends AppCompatActivity {
         mMoviesRecyclerView.setVisibility(View.INVISIBLE);
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
-
+    
+    private void loadMovies() {
+        showWeatherDataView();
+        new PopularMoviesTask().execute("popular");
+    }
 
     public class PopularMoviesTask extends AsyncTask<String, Void, List<Movie>> {
+
+        private final String TAG = PopularMoviesTask.class.getSimpleName();
 
         @Override
         protected void onPreExecute() {
@@ -60,15 +77,25 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected List<Movie> doInBackground(String... params) {
+            String selectedOption = params[0];
+            URL moviesUrl = NetworkUtils.buildUrl(NetworkUtils.path(selectedOption));
+            try {
+                String moviesJson = NetworkUtils.getResponseFromHttpUrl(moviesUrl);
+                return MovieJsonUtils.parse(moviesJson);
+            } catch (IOException e) {
+                Log.d(TAG, "Exception occurred while requesting movies: " + e.getMessage());
+            } catch (JSONException e) {
+                Log.d(TAG, "Exception occurred while parsing movies json: " + e.getMessage());
+            }
             return null;
         }
 
         @Override
-        protected void onPostExecute(String[] weatherData) {
+        protected void onPostExecute(List<Movie> movieList) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
-            if (weatherData != null) {
+            if (movieList != null) {
                 showWeatherDataView();
-//                mForecastAdapter.setWeatherData(weatherData);
+                mMoviesAdapter.setMovieList(movieList);
             } else {
                 showErrorMessage();
             }

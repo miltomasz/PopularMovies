@@ -22,13 +22,13 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     private List<Movie> mMovieList;
     private Context mContext;
 
-    public PopularMoviesAdapter(List<Movie> mMovieList, Context mContext) {
-        this.mMovieList = mMovieList;
+    public PopularMoviesAdapter(Context mContext) {
         this.mContext = mContext;
     }
 
-    public void setmMovieList(List<Movie> mMovieList) {
-        this.mMovieList = mMovieList;
+    public void setMovieList(List<Movie> movieList) {
+        this.mMovieList = movieList;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -42,7 +42,9 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Movie movie = mMovieList.get(position);
-        Picasso.with(mContext).load(movie.getPosterPath()).into(holder.mMovieImg);
+        Picasso.with(mContext)
+                .load(movie.getAbsolutePosterPath())
+                .into(holder.mMovieImg);
     }
 
     @Override
