@@ -6,9 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.plumya.popularmovies.adapter.PopularMoviesAdapter;
 import com.plumya.popularmovies.model.Movie;
@@ -21,13 +25,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements PopularMoviesAdapter.PopularMoviesAdapterOnClickHandler{
 
     private RecyclerView mMoviesRecyclerView;
     private PopularMoviesAdapter mMoviesAdapter;
-
     private TextView mErrorMessageDisplay;
-
     private ProgressBar mLoadingIndicator;
 
     @Override
@@ -43,11 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
         mMoviesRecyclerView.setLayoutManager(layoutManager);
         mMoviesRecyclerView.setHasFixedSize(true);
+        mMoviesRecyclerView.setItemViewCacheSize(20);
+        mMoviesRecyclerView.setDrawingCacheEnabled(true);
 
-        mMoviesAdapter = new PopularMoviesAdapter(this);
+        mMoviesAdapter = new PopularMoviesAdapter(getApplicationContext(), this);
         mMoviesRecyclerView.setAdapter(mMoviesAdapter);
 
-        loadMovies();
+        loadMovies("popular");
     }
 
     private void showWeatherDataView() {
@@ -60,11 +65,42 @@ public class MainActivity extends AppCompatActivity {
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
     }
     
-    private void loadMovies() {
+    private void loadMovies(String sortOption) {
         showWeatherDataView();
-        new PopularMoviesTask().execute("popular");
+        new PopularMoviesTask().execute(sortOption);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.movies, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_popular : {
+                loadMovies("popular");
+                break;
+            }
+            case R.id.action_top_rated : {
+                loadMovies("topRated");
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(Movie movie) {
+        Toast.makeText(this, movie.getOriginalTitle(), Toast.LENGTH_SHORT)
+                .show();
+    }
+
+    /**
+     * Gets movie list from back-end in background thread
+     */
     public class PopularMoviesTask extends AsyncTask<String, Void, List<Movie>> {
 
         private final String TAG = PopularMoviesTask.class.getSimpleName();
@@ -75,6 +111,11 @@ public class MainActivity extends AppCompatActivity {
             mLoadingIndicator.setVisibility(View.VISIBLE);
         }
 
+        /**
+         * Process task in background
+         * @param params the first item is a sort option selected by user
+         * @return fetched movies as a {@link List}
+         */
         @Override
         protected List<Movie> doInBackground(String... params) {
             String selectedOption = params[0];
@@ -101,5 +142,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }

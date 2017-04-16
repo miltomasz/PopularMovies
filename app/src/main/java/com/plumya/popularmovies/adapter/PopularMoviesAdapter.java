@@ -21,9 +21,11 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
 
     private List<Movie> mMovieList;
     private Context mContext;
+    private PopularMoviesAdapterOnClickHandler mClickHandler;
 
-    public PopularMoviesAdapter(Context mContext) {
-        this.mContext = mContext;
+    public PopularMoviesAdapter(Context context, PopularMoviesAdapterOnClickHandler clickHandler) {
+        this.mContext = context;
+        this.mClickHandler = clickHandler;
     }
 
     public void setMovieList(List<Movie> movieList) {
@@ -53,12 +55,24 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
         return mMovieList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mMovieImg;
 
         public ViewHolder(View itemView) {
             super(itemView);
             mMovieImg = (ImageView) itemView.findViewById(R.id.movie_img);
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Movie movie = mMovieList.get(position);
+            mClickHandler.onClick(movie);
+        }
+    }
+
+    public interface PopularMoviesAdapterOnClickHandler {
+        void onClick(Movie movie);
     }
 }
