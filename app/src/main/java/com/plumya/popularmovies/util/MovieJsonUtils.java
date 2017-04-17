@@ -30,7 +30,6 @@ public final class MovieJsonUtils {
             String overview = movieJson.getString("overview");
             String voteAverage = movieJson.getString("vote_average");
             String releaseDate = movieJson.getString("release_date");
-
             Movie movie = new Movie(originalTitle, posterPath, overview, voteAverage, releaseDate);
             movies.add(movie);
         }

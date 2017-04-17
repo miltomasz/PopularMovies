@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/title_tv"
+            android:textColor="@android:color/white"
+            android:background="@color/colorAccent"
+            android:gravity="center_vertical"
+            android:padding="16dp"
+            android:textSize="32sp"
+            android:layout_width="match_parent"
+            android:layout_height="120dp" />
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp" >
+
+            <ImageView
+                android:id="@+id/movie_image_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/release_date_tv"
+                android:textSize="24sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/movie_image_img"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/user_rating_tv"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/release_date_tv"
+                android:layout_toRightOf="@+id/movie_image_img"
+                android:padding="8dp"/>
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/overview_tv"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

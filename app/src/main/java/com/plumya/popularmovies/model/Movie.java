@@ -3,13 +3,15 @@ package com.plumya.popularmovies.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.plumya.popularmovies.util.NetworkUtils;
-
 /**
  * Created by miltomasz on 10/04/17.
  */
 
 public class Movie implements Parcelable {
+
+    public static final String DEFAULT_IMG_SIZE = "w780";
+    public static final String DETAIL_IMG_SIZE = "w342";
+
     private String originalTitle;
     private String posterPath;
     private String overview;
@@ -77,9 +79,5 @@ public class Movie implements Parcelable {
 
     public String getReleaseDate() {
         return releaseDate;
-    }
-
-    public String getAbsolutePosterPath() {
-        return NetworkUtils.buildImageUri().toString() + getPosterPath();
     }
 }

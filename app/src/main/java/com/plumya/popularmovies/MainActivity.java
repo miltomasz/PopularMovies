@@ -1,5 +1,6 @@
 package com.plumya.popularmovies;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.plumya.popularmovies.adapter.PopularMoviesAdapter;
 import com.plumya.popularmovies.model.Movie;
@@ -27,6 +27,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements PopularMoviesAdapter.PopularMoviesAdapterOnClickHandler{
+
+    public static final String POPULAR_OPT = "popular";
+    public static final String TOP_RATED_OPT = "topRated";
 
     private RecyclerView mMoviesRecyclerView;
     private PopularMoviesAdapter mMoviesAdapter;
@@ -52,10 +55,10 @@ public class MainActivity extends AppCompatActivity
         mMoviesAdapter = new PopularMoviesAdapter(getApplicationContext(), this);
         mMoviesRecyclerView.setAdapter(mMoviesAdapter);
 
-        loadMovies("popular");
+        loadMovies(POPULAR_OPT);
     }
 
-    private void showWeatherDataView() {
+    private void showMoviesView() {
         mErrorMessageDisplay.setVisibility(View.INVISIBLE);
         mMoviesRecyclerView.setVisibility(View.VISIBLE);
     }
@@ -66,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     }
     
     private void loadMovies(String sortOption) {
-        showWeatherDataView();
+        showMoviesView();
         new PopularMoviesTask().execute(sortOption);
     }
 
@@ -81,11 +84,11 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popular : {
-                loadMovies("popular");
+                loadMovies(POPULAR_OPT);
                 break;
             }
             case R.id.action_top_rated : {
-                loadMovies("topRated");
+                loadMovies(TOP_RATED_OPT);
                 break;
             }
         }
@@ -94,8 +97,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onClick(Movie movie) {
-        Toast.makeText(this, movie.getOriginalTitle(), Toast.LENGTH_SHORT)
-                .show();
+        Intent intentToStartDetailActivity = new Intent(this, MovieDetailActivity.class);
+        intentToStartDetailActivity.putExtra(MovieDetailActivity.EXTRA_MOVIE, movie);
+        startActivity(intentToStartDetailActivity);
     }
 
     /**
@@ -135,7 +139,7 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(List<Movie> movieList) {
             mLoadingIndicator.setVisibility(View.INVISIBLE);
             if (movieList != null) {
-                showWeatherDataView();
+                showMoviesView();
                 mMoviesAdapter.setMovieList(movieList);
             } else {
                 showErrorMessage();

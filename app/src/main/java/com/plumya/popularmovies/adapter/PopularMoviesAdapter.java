@@ -1,6 +1,7 @@
 package com.plumya.popularmovies.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 
 import com.plumya.popularmovies.R;
 import com.plumya.popularmovies.model.Movie;
+import com.plumya.popularmovies.util.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -44,8 +46,10 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Movie movie = mMovieList.get(position);
+        Uri imageUri = NetworkUtils.buildImageUri(
+                Movie.DEFAULT_IMG_SIZE, movie.getPosterPath());
         Picasso.with(mContext)
-                .load(movie.getAbsolutePosterPath())
+                .load(imageUri)
                 .into(holder.mMovieImg);
     }
 
