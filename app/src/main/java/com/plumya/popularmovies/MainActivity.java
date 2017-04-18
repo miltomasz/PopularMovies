@@ -30,11 +30,13 @@ public class MainActivity extends AppCompatActivity
 
     public static final String POPULAR_OPT = "popular";
     public static final String TOP_RATED_OPT = "topRated";
+    public static final String SORTING_OPTION = "sortingOption";
 
     private RecyclerView mMoviesRecyclerView;
     private PopularMoviesAdapter mMoviesAdapter;
     private TextView mErrorMessageDisplay;
     private ProgressBar mLoadingIndicator;
+    private String mSortingOption = POPULAR_OPT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,16 @@ public class MainActivity extends AppCompatActivity
         mMoviesAdapter = new PopularMoviesAdapter(getApplicationContext(), this);
         mMoviesRecyclerView.setAdapter(mMoviesAdapter);
 
-        loadMovies(POPULAR_OPT);
+        if (savedInstanceState != null) {
+            mSortingOption = savedInstanceState.getString(SORTING_OPTION);
+        }
+        loadMovies(mSortingOption);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(SORTING_OPTION, mSortingOption);
     }
 
     private void showMoviesView() {
@@ -69,6 +80,7 @@ public class MainActivity extends AppCompatActivity
     }
     
     private void loadMovies(String sortOption) {
+        setSortingOption(sortOption);
         showMoviesView();
         new PopularMoviesTask().execute(sortOption);
     }
@@ -96,10 +108,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public void onClick(Movie movie) {
         Intent intentToStartDetailActivity = new Intent(this, MovieDetailActivity.class);
         intentToStartDetailActivity.putExtra(MovieDetailActivity.EXTRA_MOVIE, movie);
         startActivity(intentToStartDetailActivity);
+    }
+
+    public void setSortingOption(String sortingOption) {
+        mSortingOption = sortingOption;
     }
 
     /**
