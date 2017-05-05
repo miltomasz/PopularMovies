@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import com.plumya.popularmovies.adapter.PopularMoviesAdapter;
 import com.plumya.popularmovies.model.Movie;
-import com.plumya.popularmovies.util.MovieJsonUtils;
+import com.plumya.popularmovies.util.JsonUtils;
 import com.plumya.popularmovies.util.NetworkUtils;
 
 import org.json.JSONException;
@@ -149,10 +149,12 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected List<Movie> doInBackground(String... params) {
             String selectedOption = params[0];
-            URL moviesUrl = NetworkUtils.buildUrl(NetworkUtils.path(selectedOption));
+            URL moviesUrl = NetworkUtils.buildUrl(
+                    NetworkUtils.EndpointsCreator.movie(selectedOption)
+            );
             try {
                 String moviesJson = NetworkUtils.getResponseFromHttpUrl(moviesUrl);
-                return MovieJsonUtils.parse(moviesJson);
+                return JsonUtils.Movies.parse(moviesJson);
             } catch (IOException e) {
                 Log.d(TAG, "Exception occurred while requesting movies: " + e.getMessage());
             } catch (JSONException e) {

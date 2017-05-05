@@ -26,13 +26,32 @@ public final class NetworkUtils {
     private static final String POPULAR_PATH = "popular";
     private static final String TOP_RATED_PATH = "top_rated";
     private static final String API_KEY = "api_key";
-    private static final String API_KEY_VALUE = "";
+    private static final String API_KEY_VALUE = "69a24cb38d0560337bd90269945449db";
+
+    public final static class EndpointsCreator {
+        public static String movie(String selectedOption) {
+            String selectedPath = path(selectedOption);
+            return Uri.parse(MOVIE_PATH)
+                    .buildUpon()
+                    .appendPath(selectedPath)
+                    .build()
+                    .toString();
+        }
+
+        public static String movie(long id, String path) {
+            return Uri.parse(MOVIE_PATH)
+                    .buildUpon()
+                    .appendPath(String.valueOf(id))
+                    .appendPath(path)
+                    .build()
+                    .toString();
+        }
+    }
 
     public static URL buildUrl(String selectedPath) {
         Uri builtUri = Uri.parse(BASE_MOVIE_URL)
                 .buildUpon()
-                .appendPath(MOVIE_PATH)
-                .appendPath(selectedPath)
+                .appendEncodedPath(selectedPath)
                 .appendQueryParameter(API_KEY, API_KEY_VALUE)
                 .build();
         URL url = null;
@@ -43,14 +62,6 @@ public final class NetworkUtils {
         }
         Log.v(TAG, "Built URL " + url);
         return url;
-    }
-
-    public static String path(String selectedOption) {
-        switch (selectedOption) {
-            case MainActivity.POPULAR_OPT : return POPULAR_PATH;
-            case MainActivity.TOP_RATED_OPT : return TOP_RATED_PATH;
-            default : return "";
-        }
     }
 
     public static Uri buildImageUri(String imageSize, String imagePath) {
@@ -79,6 +90,14 @@ public final class NetworkUtils {
             }
         } finally {
             urlConnection.disconnect();
+        }
+    }
+
+    private static String path(String selectedOption) {
+        switch (selectedOption) {
+            case MainActivity.POPULAR_OPT : return POPULAR_PATH;
+            case MainActivity.TOP_RATED_OPT : return TOP_RATED_PATH;
+            default : return "";
         }
     }
 }

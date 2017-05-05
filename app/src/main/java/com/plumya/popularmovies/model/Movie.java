@@ -12,14 +12,16 @@ public class Movie implements Parcelable {
     public static final String DEFAULT_IMG_SIZE = "w780";
     public static final String DETAIL_IMG_SIZE = "w342";
 
+    private long id;
     private String originalTitle;
     private String posterPath;
     private String overview;
     private String voteAverage;
     private String releaseDate;
 
-    public Movie(String originalTitle, String posterPath, String overview,
+    public Movie(long id, String originalTitle, String posterPath, String overview,
                  String voteAverage, String releaseDate) {
+        this.id = id;
         this.originalTitle = originalTitle;
         this.posterPath = posterPath;
         this.overview = overview;
@@ -28,6 +30,7 @@ public class Movie implements Parcelable {
     }
 
     protected Movie(Parcel in) {
+        id = in.readLong();
         originalTitle = in.readString();
         posterPath = in.readString();
         overview = in.readString();
@@ -42,6 +45,7 @@ public class Movie implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
         dest.writeString(originalTitle);
         dest.writeString(posterPath);
         dest.writeString(overview);
@@ -79,5 +83,9 @@ public class Movie implements Parcelable {
 
     public String getReleaseDate() {
         return releaseDate;
+    }
+
+    public long getId() {
+        return id;
     }
 }
