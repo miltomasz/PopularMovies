@@ -9,8 +9,8 @@
     <TextView
         android:id="@+id/reviewer_name"
         tools:text="Reviewer name"
-        android:layout_margin="2dp"
-        android:textSize="24sp"
+        android:padding="@dimen/activity_detail_space"
+        android:textSize="@dimen/review_author_name"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -18,8 +18,8 @@
     <TextView
         android:id="@+id/review_content"
         tools:text="Review content, content"
-        android:layout_margin="2dp"
-        android:textSize="16sp"
+        android:padding="@dimen/activity_detail_space"
+        android:textSize="@dimen/activity_detail_text_size"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 

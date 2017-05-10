@@ -20,13 +20,14 @@ public final class NetworkUtils {
 
     public static final String BASE_IMG_URL = "http://image.tmdb.org/t/p";
     public static final String BASE_MOVIE_URL = "http://api.themoviedb.org/3";
+    public static final int CONNECT_TIMEOUT = 5000;
 
     private static final String TAG = NetworkUtils.class.getSimpleName();
     private static final String MOVIE_PATH = "movie";
     private static final String POPULAR_PATH = "popular";
     private static final String TOP_RATED_PATH = "top_rated";
     private static final String API_KEY = "api_key";
-    private static final String API_KEY_VALUE = "69a24cb38d0560337bd90269945449db";
+    private static final String API_KEY_VALUE = "";
 
     public final static class EndpointsCreator {
         public static String movie(String selectedOption) {
@@ -76,6 +77,7 @@ public final class NetworkUtils {
 
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        urlConnection.setConnectTimeout(CONNECT_TIMEOUT);
         try {
             InputStream in = urlConnection.getInputStream();
 

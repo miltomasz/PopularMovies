@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.plumya.popularmovies.R;
+import com.plumya.popularmovies.listeners.PopularMoviesAdapterOnClickHandler;
 import com.plumya.popularmovies.model.Movie;
 import com.plumya.popularmovies.util.NetworkUtils;
 import com.squareup.picasso.Picasso;
@@ -50,6 +51,7 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
                 Movie.DEFAULT_IMG_SIZE, movie.getPosterPath());
         Picasso.with(mContext)
                 .load(imageUri)
+                .placeholder(R.mipmap.ic_launcher)
                 .into(holder.mMovieImg);
     }
 
@@ -74,9 +76,5 @@ public class PopularMoviesAdapter extends RecyclerView.Adapter<PopularMoviesAdap
             Movie movie = mMovieList.get(position);
             mClickHandler.onClick(movie);
         }
-    }
-
-    public interface PopularMoviesAdapterOnClickHandler {
-        void onClick(Movie movie);
     }
 }

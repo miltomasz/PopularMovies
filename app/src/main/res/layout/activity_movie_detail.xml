@@ -18,50 +18,60 @@
             android:textColor="@android:color/white"
             android:background="@color/colorAccent"
             android:gravity="center_vertical"
-            android:padding="16dp"
-            android:textSize="32sp"
+            android:padding="@dimen/activity_detail_text_info_padding"
+            android:textSize="@dimen/movie_title_size"
             android:layout_width="match_parent"
-            android:layout_height="120dp" />
+            android:layout_height="@dimen/activity_detail_title_height" />
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp" >
+            android:layout_margin="@dimen/activity_detail_space" >
 
             <ImageView
                 android:id="@+id/movie_image_img"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:padding="8dp"/>
+                android:padding="@dimen/activity_detail_space"/>
 
             <TextView
                 android:id="@+id/release_date_tv"
-                android:textSize="24sp"
+                android:textSize="@dimen/movie_release_date_size"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/movie_image_img"
-                android:padding="8dp"/>
+                android:padding="@dimen/activity_detail_space"/>
 
             <TextView
                 android:id="@+id/user_rating_tv"
-                android:textSize="16sp"
+                android:textSize="@dimen/activity_detail_text_size"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/release_date_tv"
                 android:layout_toRightOf="@+id/movie_image_img"
-                android:padding="8dp"/>
+                android:padding="@dimen/activity_detail_space"/>
+
+            <ImageView
+                android:id="@+id/favorite_image_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/movie_image_img"
+                android:layout_below="@+id/user_rating_tv"
+                android:padding="@dimen/activity_detail_space"
+                android:src="@drawable/ic_favorite_border_black_24dp"
+                android:onClick="onFavoriteClick"/>
 
         </RelativeLayout>
 
         <TextView
             android:id="@+id/overview_tv"
-            android:textSize="16sp"
+            android:textSize="@dimen/activity_detail_text_size"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"/>
+            android:padding="@dimen/activity_detail_space"/>
 
         <TabHost
             android:id="@+id/activityDetailTabHost"

@@ -9,7 +9,7 @@ import android.os.Parcelable;
 
 public class Movie implements Parcelable {
 
-    public static final String DEFAULT_IMG_SIZE = "w780";
+    public static final String DEFAULT_IMG_SIZE = "w185";
     public static final String DETAIL_IMG_SIZE = "w342";
 
     private long id;
